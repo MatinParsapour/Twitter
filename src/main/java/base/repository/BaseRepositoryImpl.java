@@ -41,4 +41,9 @@ public abstract class BaseRepositoryImpl<E extends BaseEntity<ID>,ID extends Ser
     public void delete(E e) {
         entityManager.remove(e);
     }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
 }
