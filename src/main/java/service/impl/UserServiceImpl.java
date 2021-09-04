@@ -4,9 +4,7 @@ import base.service.BaseServiceImpl;
 import domain.User;
 import repository.UserRepository;
 import service.UserService;
-import util.ApplicationContext;
 
-import javax.swing.plaf.synth.SynthUI;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -26,7 +24,38 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         user.setUserName(userName());
         user.setPassword(password());
         createOrUpdate(user);
+        logIn();
     }
+
+    @Override
+    public void logIn() {
+        System.out.println(" Login ");
+        while(true){
+            try{
+                System.out.print("Username : ");
+                String userName = new Scanner(System.in).nextLine();
+                System.out.print("Password : ");
+                String password = new Scanner(System.in).next();
+                User user = repository.findUserByUserNameAndPassword(userName, password);
+                if(user == null){
+                    System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
+                    System.out.println("1.Try again                   2.SignUp");
+                    int choice = new Scanner(System.in).nextInt();
+                    if(choice == 2){
+                        signUp();
+                        break;
+                    }
+                }else{
+                    //TODO create main menu for user
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
     private String firstName(){
         while(true){
             try{

@@ -11,7 +11,7 @@ public class Tweeter {
                 if (choice == 1) {
                     ApplicationContext.getUserService().signUp();
                 } else if (choice == 2) {
-                    //TODO create log in method
+                    ApplicationContext.getUserService().logIn();
                 } else if (choice == 3) {
                     System.out.println("Hope to see you soon");
                     break;

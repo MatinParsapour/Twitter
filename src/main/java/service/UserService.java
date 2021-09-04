@@ -6,4 +6,6 @@ import domain.User;
 public interface UserService extends BaseService<User,Long> {
 
     void signUp();
+
+    void logIn();
 }
