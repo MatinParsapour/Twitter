@@ -16,4 +16,20 @@ public class Comment {
 
     @Column(name = COMMENT,length = 280)
     private String comment;
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

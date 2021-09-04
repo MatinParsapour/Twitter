@@ -1,7 +1,6 @@
 import util.ApplicationContext;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Tweeter {
     public static void main(String[] args) {

@@ -17,10 +17,10 @@ public class Tweet extends BaseEntity<Long> {
     private String tweet;
 
     @Column(name = LIKES)
-    private Long likes;
+    private Integer likes;
 
     @Column(name = DIS_LIKES)
-    private Long disLikes;
+    private Integer disLikes;
 
     @ElementCollection
     private List<Comment> commentList;
@@ -40,19 +40,19 @@ public class Tweet extends BaseEntity<Long> {
         this.tweet = tweet;
     }
 
-    public Long getLikes() {
+    public Integer getLikes() {
         return likes;
     }
 
-    public void setLikes(Long likes) {
+    public void setLikes(Integer likes) {
         this.likes = likes;
     }
 
-    public Long getDisLikes() {
+    public Integer getDisLikes() {
         return disLikes;
     }
 
-    public void setDisLikes(Long disLikes) {
+    public void setDisLikes(Integer disLikes) {
         this.disLikes = disLikes;
     }
 
