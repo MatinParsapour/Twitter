@@ -9,7 +9,7 @@ public class Tweeter {
                 ApplicationContext.getDemonstrateMenus().homeMenu();
                 int choice = new Scanner(System.in).nextInt();
                 if (choice == 1) {
-                    //TODO create sign up method
+                    ApplicationContext.getUserService().signUp();
                 } else if (choice == 2) {
                     //TODO create log in method
                 } else if (choice == 3) {
