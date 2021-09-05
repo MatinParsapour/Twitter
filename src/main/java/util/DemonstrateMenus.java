@@ -16,4 +16,13 @@ public class DemonstrateMenus {
         System.out.println("|   2.Email   |");
         System.out.println("+-------------+");
     }
+
+    public void mainMenu(){
+        System.out.println("+-------------------------+");
+        System.out.println("|      1.Your tweets      |");
+        System.out.println("|      2.all tweets       |");
+        System.out.println("|      3.profile          |");
+        System.out.println("|      4.Exit             |");
+        System.out.println("+-------------------------+");
+    }
 }

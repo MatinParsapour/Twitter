@@ -76,22 +76,6 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         }
     }
 
-    private boolean evaluateUser(User user) {
-        if(user == null){
-            System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
-            System.out.println("1.Try again                   2.SignUp");
-            int choice = new Scanner(System.in).nextInt();
-            if(choice == 2){
-                signUp();
-                return true;
-            }
-        }else{
-            //TODO create main menu for user
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void logInUsingUserName() {
         System.out.println(" Login ");
@@ -108,6 +92,46 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 System.out.println("Try again");
             }
         }
+    }
+
+    @Override
+    public void mainMenu() {
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateMenus().mainMenu();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    //TODO create a method for users to work with their tweets
+                }else if(choice == 2){
+                    //TODO create a method for users to see tweets of everybody
+                }else if(choice == 3){
+                    //TODO create a method for users to work with their profile
+                }else if(choice == 4){
+                    break;
+                }else{
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private boolean evaluateUser(User user) {
+        if(user == null){
+            System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
+            System.out.println("1.Try again                   2.SignUp");
+            int choice = new Scanner(System.in).nextInt();
+            if(choice == 2){
+                signUp();
+                return true;
+            }
+        }else{
+            mainMenu();
+            return true;
+        }
+        return false;
     }
 
     private String firstName(){

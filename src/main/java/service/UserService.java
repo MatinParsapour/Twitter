@@ -12,4 +12,6 @@ public interface UserService extends BaseService<User,Long> {
     void logInUsingEmail();
 
     void logInUsingUserName();
+
+    void mainMenu();
 }
