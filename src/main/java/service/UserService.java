@@ -13,5 +13,5 @@ public interface UserService extends BaseService<User,Long> {
 
     void logInUsingUserName();
 
-    void mainMenu();
+    void mainMenu(User user);
 }

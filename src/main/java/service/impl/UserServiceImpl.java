@@ -95,7 +95,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     }
 
     @Override
-    public void mainMenu() {
+    public void mainMenu(User user) {
         while(true){
             try{
                 ApplicationContext.getDemonstrateMenus().mainMenu();
@@ -128,7 +128,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 return true;
             }
         }else{
-            mainMenu();
+            mainMenu(user);
             return true;
         }
         return false;
