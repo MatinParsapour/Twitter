@@ -11,7 +11,7 @@ public class Twitter {
                 if (choice == 1) {
                     ApplicationContext.getUserService().signUp();
                 } else if (choice == 2) {
-                    ApplicationContext.getUserService().logIn();
+                    ApplicationContext.getUserService().howToLogIn();
                 } else if (choice == 3) {
                     System.out.println("Hope to see you soon");
                     break;

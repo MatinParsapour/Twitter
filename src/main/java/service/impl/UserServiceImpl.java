@@ -4,8 +4,11 @@ import base.service.BaseServiceImpl;
 import domain.User;
 import repository.UserRepository;
 import service.UserService;
+import util.ApplicationContext;
 
+import java.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,13 +25,75 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         User user = new User();
         user.setFirstName(firstName());
         user.setUserName(userName());
-        user.setPassword(password());
-        createOrUpdate(user);
-        logIn();
+        String email = email(user.getEmail());
+        if(email != null){
+            user.setEmail(email);
+            user.setPassword(password());
+            user.setBirthday(birthday());
+            createOrUpdate(user);
+            System.out.println("You successfully signed up");
+            howToLogIn();
+        }
     }
 
     @Override
-    public void logIn() {
+    public void howToLogIn() {
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateMenus().howToLogInMenu();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    logInUsingUserName();
+                    break;
+                }else if(choice == 2){
+                    logInUsingEmail();
+                    break;
+                }else{
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    @Override
+    public void logInUsingEmail() {
+        System.out.println(" Login ");
+        while(true){
+            try{
+                System.out.print("Email : ");
+                String email = new Scanner(System.in).nextLine();
+                System.out.print("Password : ");
+                String password = new Scanner(System.in).nextLine();
+                User user = repository.findUserByEmailAndPassword(email,password);
+                if (evaluateUser(user)) break;
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private boolean evaluateUser(User user) {
+        if(user == null){
+            System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
+            System.out.println("1.Try again                   2.SignUp");
+            int choice = new Scanner(System.in).nextInt();
+            if(choice == 2){
+                signUp();
+                return true;
+            }
+        }else{
+            //TODO create main menu for user
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void logInUsingUserName() {
         System.out.println(" Login ");
         while(true){
             try{
@@ -37,18 +102,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 System.out.print("Password : ");
                 String password = new Scanner(System.in).next();
                 User user = repository.findUserByUserNameAndPassword(userName, password);
-                if(user == null){
-                    System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
-                    System.out.println("1.Try again                   2.SignUp");
-                    int choice = new Scanner(System.in).nextInt();
-                    if(choice == 2){
-                        signUp();
-                        break;
-                    }
-                }else{
-                    //TODO create main menu for user
-                    break;
-                }
+                if (evaluateUser(user)) break;
             }catch (InputMismatchException exception){
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
@@ -119,6 +173,118 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
             } catch (InputMismatchException exception) {
                 System.out.println("You should enter number");
                 System.out.println("Start over");
+            }
+        }
+    }
+
+    private String email(String currentEmail){
+        Pattern validEmail = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[\\a-zA-Z]{2,6}");
+        System.out.print("Email : ");
+        String email = new Scanner(System.in).next();
+        Matcher machEmail = validEmail.matcher(email);
+        while (!machEmail.matches()) {
+            System.out.println("this is not a valid email");
+            System.out.println("Try again");
+            email = new Scanner(System.in).next();
+            machEmail = validEmail.matcher(email);
+        }
+        return validationEmail(email,currentEmail);
+    }
+
+    private String validationEmail(String email, String currentEmail) {
+        while (true) {
+            try{
+                Random random = new Random();
+                int validationCode = random.nextInt(1000000);
+                System.out.println("Please wait, we are sending a validation code to " + email);
+                for (int waiting = 0; waiting <= 5; waiting++) {
+                    Thread.sleep(1000);
+                    System.out.print("" + "🟩");
+                }
+                System.out.println();
+                System.out.println("This is your validation code : " + validationCode);
+                System.out.print("Write your validation code : ");
+                int validate = new Scanner(System.in).nextInt();
+                if (validate == validationCode) {
+                    System.out.print("Please wait, we are syncing data");
+                    for (int delay = 0; delay <= 5; delay++) {
+                        Thread.sleep(1000);
+                        System.out.print(" .");
+                    }
+                    System.out.println("Now you are good to go");
+                    System.out.println("\nYour email is valid");
+                    return email;
+                } else {
+                    System.out.println("Invalid code");
+                    System.out.println("1.Send another code       2.back to main menu");
+                    int choice = new Scanner(System.in).nextInt();
+                    if (choice == 2) {
+                        return currentEmail;
+                    }
+                }
+            }catch (InputMismatchException | InterruptedException exception){
+                System.out.println("Something went wrong");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private LocalDate birthday(){
+        System.out.println("Birthday");
+        LocalDate date;
+        while (true) {
+            try {
+                System.out.print("Year : ");
+                int year = new Scanner(System.in).nextInt();
+                int month = month();
+                int day = day();
+                date = LocalDate.of(year, month, day);
+                if (LocalDate.now().isAfter(date)) {
+                    break;
+                } else {
+                    System.out.println("This is not a valid date for your birthday");
+                    System.out.println("Try again");
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("You should enter number");
+                System.out.println("Try again");
+            }
+        }
+        return date;
+    }
+
+    private int day() {
+        while(true){
+            try{
+                System.out.print("Day : ");
+                int day = new Scanner(System.in).nextInt();
+                while (day < 1 || day > 31) {
+                    System.out.println("This is not a valid number for day");
+                    System.out.println("Try again");
+                    day = new Scanner(System.in).nextInt();
+                }
+                return day;
+            }catch (InputMismatchException exception){
+                System.out.println("You should enter number");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private int month() {
+        while(true){
+            try{
+                System.out.print("Month : ");
+                int month = new Scanner(System.in).nextInt();
+                while (month < 1 || month > 12) {
+                    System.out.println("This is not a valid number for month");
+                    System.out.println("Try again");
+                    month = new Scanner(System.in).nextInt();
+                }
+                return month;
+            }catch (InputMismatchException exception){
+                System.out.println("You should enter number");
+                System.out.println("Try again");
             }
         }
     }

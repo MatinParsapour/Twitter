@@ -7,5 +7,9 @@ public interface UserService extends BaseService<User,Long> {
 
     void signUp();
 
-    void logIn();
+    void howToLogIn();
+
+    void logInUsingEmail();
+
+    void logInUsingUserName();
 }

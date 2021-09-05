@@ -52,4 +52,22 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User,Long> implements
             return null;
         }
     }
+
+    @Override
+    public User findUserByEmailAndPassword(String email, String password) {
+        try{
+            CriteriaQuery<User> criteriaQuery = CriteriaCustom.getCriteriaBuilderCutom().createQuery(User.class);
+            Root<User> userRoot = criteriaQuery.from(User.class);
+            criteriaQuery.select(userRoot)
+                    .where(CriteriaCustom.getCriteriaBuilderCutom().and(
+                            CriteriaCustom.getCriteriaBuilderCutom().equal(
+                                    userRoot.get("email"), email),
+                            CriteriaCustom.getCriteriaBuilderCutom().equal(
+                                    userRoot.get("password"),password)));
+            User user = entityManager.createQuery(criteriaQuery).getSingleResult();
+            return user;
+        }catch (NoResultException exception){
+            return null;
+        }
+    }
 }
