@@ -24,6 +24,8 @@ public class ApplicationContext {
 
     private static final DemonstrateMenus demonstrateMenus;
 
+    private static final DemonstrateInformation demonstrateInformation;
+
     static {
         entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
         tweetRepository = new TweetRepositoryImpl(entityManager);
@@ -31,6 +33,7 @@ public class ApplicationContext {
         userRepository = new UserRepositoryImpl(entityManager);
         userService = new UserServiceImpl(userRepository);
         demonstrateMenus = new DemonstrateMenus();
+        demonstrateInformation = new DemonstrateInformation();
     }
 
     public static TweetService getTweetService(){
@@ -44,4 +47,6 @@ public class ApplicationContext {
     public static DemonstrateMenus getDemonstrateMenus(){
         return demonstrateMenus;
     }
+
+    public static DemonstrateInformation getDemonstrateInformation(){return demonstrateInformation;}
 }

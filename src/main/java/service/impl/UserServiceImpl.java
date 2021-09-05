@@ -105,7 +105,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 }else if(choice == 2){
                     //TODO create a method for users to see tweets of everybody
                 }else if(choice == 3){
-                    //TODO create a method for users to work with their profile
+                    profile(user);
                 }else if(choice == 4){
                     break;
                 }else{
@@ -115,6 +115,133 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
+        }
+    }
+
+    @Override
+    public void profile(User user) {
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateInformation().UserInformation(user);
+                ApplicationContext.getDemonstrateMenus().profileMenu();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    changeProfile(user);
+                    createOrUpdate(user);
+                }else if(choice == 2){
+                    deleteField(user);
+                    createOrUpdate(user);
+                }else if(choice == 3){
+                    break;
+                }else {
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    @Override
+    public void changeProfile(User user) {
+        System.out.print("Enter name of field : ");
+        String field = new Scanner(System.in).next();
+        switch (field.toLowerCase()){
+            case "firstname":
+                user.setFirstName(firstName());
+                break;
+            case "lastname":
+                user.setLastName(lastName());
+                break;
+            case "username":
+                user.setUserName(userName());
+                break;
+            case "password":
+                user.setPassword(password());
+                break;
+            case "email":
+                user.setEmail(email(user.getEmail()));
+                break;
+            case "phonenumber":
+                user.setPhoneNumber(phoneNumber(user.getPhoneNumber()));
+                break;
+            case "bio":
+                user.setBio(bio());
+                break;
+            case "birthday":
+                user.setBirthday(birthday());
+                break;
+            default:
+                System.out.println("Invalid entry");
+        }
+    }
+
+    @Override
+    public void deleteField(User user) {
+        System.out.println("Enter name of field : ");
+        String field = new Scanner(System.in).next();
+        switch (field.toLowerCase()){
+            case "firstname":
+            case "username" :
+            case "email" :
+            case "password":
+            case "birthday":
+                System.out.println("You can't delete this field");
+                break;
+            case "lastname":
+                deleteLastName(user);
+                break;
+            case "phonenumber":
+                deletePhoneNumber(user);
+                break;
+            case "bio":
+                deleteBio(user);
+                break;
+            default:
+                System.out.println("Invalid entry");
+        }
+    }
+
+    private void deleteBio(User user) {
+        try{
+            System.out.println("Are you sure");
+            System.out.println("1.Yes   2.NO");
+            int finalPermission = new Scanner(System.in).nextInt();
+            if(finalPermission == 1){
+                user.setBio(null);
+                System.out.println("Phone number deleted");
+            }
+        }catch (InputMismatchException exception){
+            System.out.println("Invalid entry");
+        }
+    }
+
+    private void deletePhoneNumber(User user) {
+        try{
+            System.out.println("Are you sure");
+            System.out.println("1.Yes   2.NO");
+            int finalPermission = new Scanner(System.in).nextInt();
+            if(finalPermission == 1){
+                user.setPhoneNumber(null);
+                System.out.println("Phone number deleted");
+            }
+        }catch (InputMismatchException exception){
+            System.out.println("Invalid entry");
+        }
+    }
+
+    private void deleteLastName(User user) {
+        try{
+            System.out.println("Are you sure");
+            System.out.println("1.Yes   2.No");
+            int finalPermission = new Scanner(System.in).nextInt();
+            if(finalPermission == 1){
+                user.setLastName(null);
+                System.out.println("Lastname deleted");
+            }
+        }catch (InputMismatchException exception){
+            System.out.println("Invalid entry");
         }
     }
 
@@ -138,6 +265,23 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         while(true){
             try{
                 System.out.print("Firstname : ");
+                String firstName = new Scanner(System.in).nextLine();
+                System.out.println("1.Acceptable        2.Unacceptable");
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    return firstName;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private String lastName(){
+        while(true){
+            try{
+                System.out.print("Lastname : ");
                 String firstName = new Scanner(System.in).nextLine();
                 System.out.println("1.Acceptable        2.Unacceptable");
                 int choice = new Scanner(System.in).nextInt();
@@ -248,6 +392,72 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 }
             }catch (InputMismatchException | InterruptedException exception){
                 System.out.println("Something went wrong");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private String phoneNumber(String currentPhoneNumber) {
+        Pattern validPhoneNumber = Pattern.compile("[0][9][0-9]{9}");
+        System.out.println("Enter your full phone number");
+        String phoneNumber = new Scanner(System.in).next();
+        Matcher matchPhoneNumber = validPhoneNumber.matcher(phoneNumber);
+        while (!matchPhoneNumber.matches()) {
+            System.out.println("This is not a valid phone number");
+            System.out.println("Try again");
+            phoneNumber = new Scanner(System.in).next();
+            matchPhoneNumber = validPhoneNumber.matcher(phoneNumber);
+        }
+        return validationPhoneNumber(phoneNumber,currentPhoneNumber);
+    }
+
+    private String validationPhoneNumber(String phoneNumber, String number) {
+        while (true) {
+            try{
+                Random random = new Random();
+                int validationCode = random.nextInt(1000000);
+                System.out.println("Please wait, we are sending a validation code to " + phoneNumber);
+                for (int waiting = 0; waiting <= 5; waiting++) {
+                    Thread.sleep(1000);
+                    System.out.print("" + "🟩");
+                }
+                System.out.println("\nThis is your validation code : " + validationCode);
+                System.out.print("Write your validation code : ");
+                int validate = new Scanner(System.in).nextInt();
+                if (validate == validationCode) {
+                    System.out.println("Your phone is valid");
+                    return phoneNumber;
+                } else {
+                    System.out.println("Invalid code");
+                    System.out.println("1.Send another code       2.back to main menu");
+                    int choice = new Scanner(System.in).nextInt();
+                    if (choice == 2) {
+                        return number;
+                    }
+                }
+            }catch (InputMismatchException | InterruptedException exception){
+                System.out.println("Something went wrong");
+                System.out.println("Try again");
+            }
+        }
+    }
+
+    private String bio(){
+        while(true){
+            try{
+                System.out.print("Bio : ");
+                String bio = new Scanner(System.in).nextLine();
+                if(bio.length() <= 160){
+                    System.out.println("1.Acceptable        2.Unacceptable");
+                    int choice = new Scanner(System.in).nextInt();
+                    if(choice == 1){
+                        return bio;
+                    }
+                }else{
+                    System.out.println("You should enter bio fewer than 160 character");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
