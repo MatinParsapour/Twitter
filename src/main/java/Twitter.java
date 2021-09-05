@@ -2,7 +2,7 @@ import util.ApplicationContext;
 
 import java.util.*;
 
-public class Tweeter {
+public class Twitter {
     public static void main(String[] args) {
         while (true) {
             try {
