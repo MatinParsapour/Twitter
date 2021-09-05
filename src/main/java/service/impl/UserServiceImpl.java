@@ -179,7 +179,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
 
     @Override
     public void deleteField(User user) {
-        System.out.println("Enter name of field : ");
+        System.out.print("Enter name of field : ");
         String field = new Scanner(System.in).next();
         switch (field.toLowerCase()){
             case "firstname":
