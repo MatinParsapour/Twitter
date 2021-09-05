@@ -33,4 +33,21 @@ public class DemonstrateMenus {
         System.out.println("|      3.back to main menu    |");
         System.out.println("+-----------------------------+");
     }
+
+    public void tweetsMenu(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|       1.see your tweets     |");
+        System.out.println("|       2.add a tweet         |");
+        System.out.println("|      3.back to main menu    |");
+        System.out.println("+-----------------------------+");
+    }
+
+    public void eachTweetMenu(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|    1.Edit current tweet     |");
+        System.out.println("|   2.delete current tweet    |");
+        System.out.println("|        3.next tweet         |");
+        System.out.println("|       4.back to menu        |");
+        System.out.println("+-----------------------------+");
+    }
 }

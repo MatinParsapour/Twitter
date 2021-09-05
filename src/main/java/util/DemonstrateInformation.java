@@ -3,7 +3,7 @@ package util;
 import domain.User;
 
 public class DemonstrateInformation {
-    public void UserInformation(User user){
+    public void userInformation(User user){
         int firstNameSize = user.getFirstName().length();
         int lastNameSize;
         int phoneNumberSize;
@@ -29,16 +29,16 @@ public class DemonstrateInformation {
         int cover = firstNameSize + lastNameSize + userNameSize + passwordSize + emailSize + phoneNumberSize +
                 bioSize + birthdaySize + 48;
 
-        printHeader(firstNameSize, lastNameSize, phoneNumberSize, bioSize, userNameSize, passwordSize, emailSize, birthdaySize, cover);
+        printUserHeader(firstNameSize, lastNameSize, phoneNumberSize, bioSize, userNameSize, passwordSize, emailSize, birthdaySize, cover);
 
-        printInformation(user, firstNameSize, lastNameSize, phoneNumberSize, bioSize, userNameSize, passwordSize, emailSize, birthdaySize, cover);
+        printUserInformation(user, firstNameSize, lastNameSize, phoneNumberSize, bioSize, userNameSize, passwordSize, emailSize, birthdaySize, cover);
     }
 
-    private void printInformation(User user, int firstNameSize,
-                                  int lastNameSize, int phoneNumberSize,
-                                  int bioSize, int userNameSize,
-                                  int passwordSize, int emailSize,
-                                  int birthdaySize, int cover) {
+    private void printUserInformation(User user, int firstNameSize,
+                                      int lastNameSize, int phoneNumberSize,
+                                      int bioSize, int userNameSize,
+                                      int passwordSize, int emailSize,
+                                      int birthdaySize, int cover) {
         System.out.format("| %" +(-(firstNameSize + 9)) + "s", user.getFirstName());
         if(user.getLastName() != null){
             System.out.format("|%" +(-(lastNameSize + 8)) + "s", user.getLastName());
@@ -68,11 +68,11 @@ public class DemonstrateInformation {
         System.out.println("+");
     }
 
-    private void printHeader(int firstNameSize, int lastNameSize,
-                             int phoneNumberSize, int bioSize,
-                             int userNameSize, int passwordSize,
-                             int emailSize, int birthdaySize,
-                             int cover) {
+    private void printUserHeader(int firstNameSize, int lastNameSize,
+                                 int phoneNumberSize, int bioSize,
+                                 int userNameSize, int passwordSize,
+                                 int emailSize, int birthdaySize,
+                                 int cover) {
         System.out.print("+");
         for(int header = 0; header <= cover; header++){
             System.out.print("-");
@@ -88,6 +88,84 @@ public class DemonstrateInformation {
         System.out.format("|%" +(-(bioSize + 3)) + "s","bio");
         System.out.format("|%" +(-(birthdaySize + 3)) + "s |\n","birthday");
 
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
+
+    public void tweetsInformation(User user){
+        int tweetSize = 0;
+        int userNameSize = 0;
+        int commentSize = 0;
+        for(int tweetSizes = 0 ; tweetSizes < user.getTweets().size(); tweetSizes++){
+            if(user.getTweets().get(tweetSizes).getTweet().length() > tweetSize){
+                tweetSize = user.getTweets().get(tweetSizes).getTweet().length();
+            }
+        }
+        int likesSize = 10;
+        int disLikesSize = 10;
+        printTweets(user, tweetSize, userNameSize, commentSize, likesSize, disLikesSize);
+    }
+
+    private void printTweets(User user, int tweetSize, int userNameSize, int commentSize, int likesSize, int disLikesSize) {
+        for(int tweet = 0; tweet < user.getTweets().size() ; tweet++){
+            int cover = tweetSize + likesSize + disLikesSize + 9;
+            printTweetHeader(tweetSize, likesSize, disLikesSize, cover);
+            printTweetInformation(user, tweetSize, likesSize, disLikesSize, tweet, cover);
+            if(user.getTweets().get(tweet).getCommentList().size() != 0){
+                for(int userNameSizes = 0; userNameSizes < user.getTweets().get(tweet).getCommentList().get(tweet).getUser().length(); userNameSizes++){
+                    if(user.getTweets().get(tweet).getCommentList().get(tweet).getUser().length() > tweetSize){
+                        userNameSize = user.getTweets().get(tweet).getCommentList().get(tweet).getUser().length();
+                    }
+                }for(int commentSizes = 0; commentSizes < user.getTweets().get(tweet).getCommentList().get(tweet).getComment().length(); commentSizes++){
+                    if(user.getTweets().get(tweet).getCommentList().get(tweet).getComment().length() > tweetSize){
+                        commentSize = user.getTweets().get(tweet).getCommentList().get(tweet).getComment().length();
+                    }
+                }
+                for(int comment = 0; comment < user.getTweets().get(tweet).getCommentList().size() ; comment++){
+                    System.out.format(" %" + (-userNameSize) + "s : ", user.getTweets().get(tweet).getCommentList().get(comment).getUser());
+                    System.out.format("        %" + (-commentSize) + "s\n", user.getTweets().get(tweet).getCommentList().get(comment).getComment());
+                }
+            }
+            int nextMove = ApplicationContext.getTweetService().eachTweet(user.getTweets().get(tweet));
+            if(nextMove == 4 || nextMove == 2){
+                break;
+            }
+        }
+    }
+
+    private void printTweetInformation(User user, int tweetSize,
+                                       int likesSize, int disLikesSize,
+                                       int tweet, int cover) {
+        System.out.format("| %" + (-(tweetSize + 7)) + "s", user.getTweets().get(tweet).getTweet());
+        if(user.getTweets().get(tweet).getLikes() != null){
+            System.out.format("|%" + (-likesSize) + "s", user.getTweets().get(tweet).getLikes());
+        }else{
+            System.out.format("|%" + (-likesSize) + "s","0");
+        }
+        if(user.getTweets().get(tweet).getDisLikes() != null){
+            System.out.format("|%" + (-disLikesSize) + "s|\n", user.getTweets().get(tweet).getDisLikes());
+        }else{
+            System.out.format("|%" + (-disLikesSize) + "s|\n","0");
+        }
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
+
+    private void printTweetHeader(int tweetSize, int likesSize, int disLikesSize, int cover) {
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+        System.out.format("| %" + (-(tweetSize + 7)) + "s", "tweet");
+        System.out.format("|%" + (-likesSize) + "s","likes");
+        System.out.format("|%" + (-disLikesSize) + "s|\n","dislikes");
         System.out.print("+");
         for(int header = 0; header <= cover; header++){
             System.out.print("-");

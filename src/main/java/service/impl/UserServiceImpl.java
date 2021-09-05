@@ -101,7 +101,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 ApplicationContext.getDemonstrateMenus().mainMenu();
                 int choice = new Scanner(System.in).nextInt();
                 if(choice == 1){
-                    //TODO create a method for users to work with their tweets
+                    ApplicationContext.getTweetService().userTweets(user);
                 }else if(choice == 2){
                     //TODO create a method for users to see tweets of everybody
                 }else if(choice == 3){
@@ -122,7 +122,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     public void profile(User user) {
         while(true){
             try{
-                ApplicationContext.getDemonstrateInformation().UserInformation(user);
+                ApplicationContext.getDemonstrateInformation().userInformation(user);
                 ApplicationContext.getDemonstrateMenus().profileMenu();
                 int choice = new Scanner(System.in).nextInt();
                 if(choice == 1){

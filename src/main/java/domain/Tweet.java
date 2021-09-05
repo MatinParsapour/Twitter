@@ -13,7 +13,7 @@ public class Tweet extends BaseEntity<Long> {
     private static final String DIS_LIKES = "dis_likes";
     private static final String LIKES = "likes";
 
-    @Column(name = TWEET)
+    @Column(name = TWEET,length = 280)
     private String tweet;
 
     @Column(name = LIKES)
