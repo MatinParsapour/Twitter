@@ -57,4 +57,19 @@ public class DemonstrateMenus {
         System.out.println("| 1.comment 💬  2.like 👍  3.dislike 👎  4.next tweet  5.back to menu |");
         System.out.println("+--------------------------------------------------------------------+");
     }
+
+    public void commentMenu(){
+        System.out.println("+-----------------------------+");
+        System.out.println("|       1.add a comment       |");
+        System.out.println("|     2.delete a comment      |");
+        System.out.println("|      3.Edit a comment       |");
+        System.out.println("|       4.back to menu        |");
+        System.out.println("+-----------------------------+");
+    }
+
+    public void toDoWithDeletableComments(){
+        System.out.println("+----------------------------------+");
+        System.out.println("| 1.delete  2.next  3.back to menu |");
+        System.out.println("+----------------------------------+");
+    }
 }

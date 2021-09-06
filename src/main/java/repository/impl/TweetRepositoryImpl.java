@@ -1,19 +1,16 @@
 package repository.impl;
 
 import base.repository.BaseRepositoryImpl;
+import domain.Comment;
 import domain.Like;
 import domain.Tweet;
 import domain.User;
 import repository.TweetRepository;
-import util.CriteriaCustom;
 import util.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class TweetRepositoryImpl extends BaseRepositoryImpl<Tweet,Long> implements TweetRepository {
 
@@ -55,29 +52,19 @@ public class TweetRepositoryImpl extends BaseRepositoryImpl<Tweet,Long> implemen
         }
     }
 
-    @Override
-    public void deleteUserDisLikes(Tweet tweet,String userName) {
-        CriteriaDelete<Tweet> criteriaDelete = CriteriaCustom.getCriteriaBuilderCutom().createCriteriaDelete(Tweet.class);
-        Root<Tweet> tweetRoot = criteriaDelete.from(Tweet.class);
-        tweetRoot.join("Tweet.likes");
-        criteriaDelete.where(CriteriaCustom.getCriteriaBuilderCutom().and(
-                CriteriaCustom.getCriteriaBuilderCutom().equal
-                        (tweetRoot.get("userName"),userName),
-                CriteriaCustom.getCriteriaBuilderCutom().equal
-                        (tweetRoot.get("Tweet_id"),tweet.getId())));
-        HibernateUtil.getEntityManagerFactory().createEntityManager().createQuery(criteriaDelete).executeUpdate();
-    }
 
     @Override
-    public void deleteUserLikes(Tweet tweet,String userName) {
-        CriteriaDelete<Tweet> criteriaDelete = CriteriaCustom.getCriteriaBuilderCutom().createCriteriaDelete(Tweet.class);
-        Root<Tweet> tweetRoot = criteriaDelete.from(Tweet.class);
-        tweetRoot.join("Tweet.disLikes");
-        criteriaDelete.where(CriteriaCustom.getCriteriaBuilderCutom().and(
-                CriteriaCustom.getCriteriaBuilderCutom().equal
-                        (tweetRoot.get("userName"),userName),
-                CriteriaCustom.getCriteriaBuilderCutom().equal
-                        (tweetRoot.get("Tweet_id"),tweet.getId())));
-        HibernateUtil.getEntityManagerFactory().createEntityManager().createQuery(criteriaDelete).executeUpdate();
+    public List<Tweet> findTweetByUserComments(Tweet tweeted,String userName) {
+        try{
+            EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+            List<Tweet> tweet = entityManager.createQuery("SELECT t " +
+                    "FROM Tweet t " +
+                    "JOIN t.commentList l"+
+                    " WHERE l.user = :username ", Tweet.class).
+                    setParameter("username",userName).getResultList();
+            return tweet;
+        }catch (NoResultException exception){
+            return null;
+        }
     }
 }

@@ -1,10 +1,7 @@
 package service;
 
 import base.service.BaseService;
-import domain.DisLike;
-import domain.Like;
-import domain.Tweet;
-import domain.User;
+import domain.*;
 
 import java.util.Dictionary;
 
@@ -20,9 +17,7 @@ public interface TweetService extends BaseService<Tweet,Long> {
 
     void tweets(User user);
 
-    Integer toDoWithTweets(Tweet tweet, User user);
+    Integer toDoWithTweets(Tweet tweet, User user, int counter);
 
-    void deleteDisLike(Tweet tweet,String userName);
-
-    void deleteLike(Tweet tweet,String userName);
+    Integer deletableComments(Tweet tweet, Comment comment);
 }

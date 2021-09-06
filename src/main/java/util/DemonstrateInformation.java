@@ -112,7 +112,9 @@ public class DemonstrateInformation {
         printUserTweets(user, tweetSize, userNameSize, commentSize, likesSize, disLikesSize);
     }
 
-    private void printUserTweets(User user, int tweetSize, int userNameSize, int commentSize, int likesSize, int disLikesSize) {
+    private void printUserTweets(User user, int tweetSize,
+                                 int userNameSize, int commentSize,
+                                 int likesSize, int disLikesSize) {
         for(int tweet = 0; tweet < user.getTweets().size() ; tweet++){
             int cover = tweetSize + likesSize + disLikesSize + 9;
             printTweetHeader(tweetSize, likesSize, disLikesSize, cover);
@@ -154,7 +156,8 @@ public class DemonstrateInformation {
         System.out.println("+");
     }
 
-    private void printTweetHeader(int tweetSize, int likesSize, int disLikesSize, int cover) {
+    private void printTweetHeader(int tweetSize, int likesSize,
+                                  int disLikesSize, int cover) {
         System.out.print("+");
         for(int header = 0; header <= cover; header++){
             System.out.print("-");
@@ -184,7 +187,10 @@ public class DemonstrateInformation {
         printAllTweets(tweetList,tweetSize,likesSize,disLikesSize,userNameSize,commentSize,user);
     }
 
-    private void printAllTweets(List<Tweet> tweets, int tweetSize, int likesSize, int disLikesSize, int userNameSize, int commentSize,User user){
+    private void printAllTweets(List<Tweet> tweets, int tweetSize,
+                                int likesSize, int disLikesSize,
+                                int userNameSize, int commentSize,
+                                User user){
         for(int tweet = 0; tweet < tweets.size() ; tweet++){
             int cover = tweetSize + likesSize + disLikesSize + 9;
             printTweetHeader(tweetSize, likesSize, disLikesSize, cover);
@@ -204,7 +210,7 @@ public class DemonstrateInformation {
                     System.out.format("        %" + (-(commentSize + 5)) + "s\n", tweets.get(tweet).getCommentList().get(comment).getComment());
                 }
             }
-            int nextMove = ApplicationContext.getTweetService().toDoWithTweets(tweets.get(tweet),user);
+            int nextMove = ApplicationContext.getTweetService().toDoWithTweets(tweets.get(tweet),user,tweet);
             if(nextMove == 5){
                 break;
             }
@@ -213,7 +219,9 @@ public class DemonstrateInformation {
             }
         }
     }
-    private void printAllTweetsInformation(List<Tweet> tweets, int tweetSize, int likesSize , int disLikesSize,int tweet, int cover){
+    private void printAllTweetsInformation(List<Tweet> tweets, int tweetSize,
+                                           int likesSize , int disLikesSize,
+                                           int tweet, int cover){
         System.out.format("| %" + (-(tweetSize + 7)) + "s", tweets.get(tweet).getTweet());
         System.out.format("|%" + (-likesSize) + "s", tweets.get(tweet).getLikes().size());
         System.out.format("|%" + (-disLikesSize) + "s|\n", tweets.get(tweet).getDisLikes().size());
@@ -254,7 +262,10 @@ public class DemonstrateInformation {
 
     }
 
-    private void userHeaderInSearch(int firstNameSize, int lastNameSize, int userNameSize, int emailSize, int phoneNumberSize, int bioSize, int cover){
+    private void userHeaderInSearch(int firstNameSize, int lastNameSize,
+                                    int userNameSize, int emailSize,
+                                    int phoneNumberSize, int bioSize,
+                                    int cover){
         System.out.print("+");
         for(int header = 0; header <= cover; header++){
             System.out.print("-");
@@ -274,7 +285,10 @@ public class DemonstrateInformation {
         }
         System.out.println("+");
     }
-    private void userInformationInSearch(int firstNameSize, int lastNameSize, int userNameSize, int emailSize, int phoneNumberSize, int bioSize, int cover, User user){
+    private void userInformationInSearch(int firstNameSize, int lastNameSize,
+                                         int userNameSize, int emailSize,
+                                         int phoneNumberSize, int bioSize,
+                                         int cover, User user){
         System.out.format("| %" +(-(firstNameSize + 9)) + "s", user.getFirstName());
         if(user.getLastName() != null){
             System.out.format("|%" +(-(lastNameSize + 8)) + "s", user.getLastName());
@@ -300,5 +314,17 @@ public class DemonstrateInformation {
             System.out.print("-");
         }
         System.out.println("+");
+    }
+
+    public void printNominatedForDelete(List<Tweet> tweets,User user,int tweet){
+        for(int counter = 0 ; counter <tweets.get(tweet).getCommentList().size() ; counter++){
+            if(tweets.get(tweet).getCommentList().get(counter).getUser().equals(user.getUserName())){
+                System.out.println(tweets.get(tweet).getCommentList().get(counter).getComment());
+                int nextMove = ApplicationContext.getTweetService().deletableComments(tweets.get(tweet),tweets.get(tweet).getCommentList().get(counter));
+                if(nextMove == 3){
+                    break;
+                }
+            }
+        }
     }
 }

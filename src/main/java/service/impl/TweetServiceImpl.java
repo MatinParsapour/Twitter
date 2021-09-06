@@ -110,13 +110,13 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
     }
 
     @Override
-    public Integer toDoWithTweets(Tweet tweet,User user) {
+    public Integer toDoWithTweets(Tweet tweet,User user,int counter) {
         while(true){
             try{
                 ApplicationContext.getDemonstrateMenus().allTweetsMenu();
                 int choice = new Scanner(System.in).nextInt();
                 if(choice == 1){
-                    addComment(tweet,user);
+                    comment(tweet,user,counter);
                     return 1;
                 }else if(choice == 2){
                     like(tweet,user);
@@ -138,17 +138,60 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
     }
 
     @Override
-    public void deleteDisLike(Tweet tweet,String userName) {
-        HibernateUtil.getEntityManagerFactory().createEntityManager().getTransaction().begin();
-        repository.deleteUserDisLikes(tweet,userName);
-        HibernateUtil.getEntityManagerFactory().createEntityManager().getTransaction().commit();
+    public Integer deletableComments(Tweet tweet, Comment comment) {
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateMenus().toDoWithDeletableComments();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    tweet.getCommentList().remove(comment);
+                    createOrUpdate(tweet);
+                    System.out.println("Your comment successfully deleted");
+                    return 1;
+                }else if(choice == 2){
+                    return 2;
+                }else if(choice == 3){
+                    return 3;
+                }else{
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+            }
+        }
     }
 
-    @Override
-    public void deleteLike(Tweet tweet,String userName) {
-        HibernateUtil.getEntityManagerFactory().createEntityManager().getTransaction().begin();
-        repository.deleteUserLikes(tweet,userName);
-        HibernateUtil.getEntityManagerFactory().createEntityManager().getTransaction().commit();
+    private void comment(Tweet tweet,User user,int counter){
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateMenus().commentMenu();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    addComment(tweet,user);
+                    break;
+                }else if(choice == 2){
+                    deleteComment(tweet,user,counter);
+                    break;
+                }else if(choice == 3){
+                    //TODO create a method to edit a comment
+                }else if(choice == 4){
+                    break;
+                }else{
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+            }
+        }
+    }
+
+    private void deleteComment(Tweet tweet,User user,int counter){
+        List<Tweet> tweets = repository.findTweetByUserComments(tweet,user.getUserName());
+        if(tweets.size() != 0){
+            ApplicationContext.getDemonstrateInformation().printNominatedForDelete(tweets,user,counter);
+        }else{
+            System.out.println("You don't any comment for this tweet ");
+        }
     }
 
     private void editTweet(Tweet tweet){
