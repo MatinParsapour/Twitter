@@ -6,6 +6,7 @@ import domain.User;
 import repository.UserRepository;
 import service.UserService;
 import util.ApplicationContext;
+import util.Color;
 
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -220,7 +221,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     @Override
     public void showUser(Tweet tweet) {
         User user = repository.findUserByTweet(tweet);
-        System.out.println(user.getUserName());
+        System.out.println(Color.ANSI_GREEN + user.getUserName() + Color.ANSI_RESET);
     }
 
     private void deleteBio(User user) {

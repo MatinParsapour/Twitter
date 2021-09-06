@@ -207,8 +207,8 @@ public class DemonstrateInformation {
                     }
                 }
                 for(int comment = 0; comment < tweets.get(tweet).getCommentList().size() ; comment++){
-                    System.out.format(" %" + (-(userNameSize + 5)) + "s : \n", tweets.get(tweet).getCommentList().get(comment).getUser());
-                    System.out.format("        %" + (-(commentSize + 5)) + "s\n", tweets.get(tweet).getCommentList().get(comment).getComment());
+                    System.out.format(Color.ANSI_BLUE + " %" + (-(userNameSize + 5)) + "s : \n", tweets.get(tweet).getCommentList().get(comment).getUser() + Color.ANSI_RESET);
+                    System.out.format(Color.ANSI_YELLOW + "        %" + (-(commentSize + 5)) + "s\n", tweets.get(tweet).getCommentList().get(comment).getComment() + Color.ANSI_RESET);
                 }
             }
             int nextMove = ApplicationContext.getTweetService().toDoWithTweets(tweets.get(tweet),user,tweet);
