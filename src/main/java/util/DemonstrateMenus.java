@@ -72,4 +72,10 @@ public class DemonstrateMenus {
         System.out.println("| 1.delete  2.next  3.back to menu |");
         System.out.println("+----------------------------------+");
     }
+
+    public void toDoWithEditableComments(){
+        System.out.println("+----------------------------------+");
+        System.out.println("| 1.edit    2.next  3.back to menu |");
+        System.out.println("+----------------------------------+");
+    }
 }

@@ -11,8 +11,6 @@ import java.util.List;
 public class Tweet extends BaseEntity<Long> {
     public static final String TWEET_TABLE = "tweet_table";
     private static final String TWEET = "tweet";
-    private static final String DIS_LIKES = "dis_likes";
-    private static final String LIKES = "likes";
 
     @Column(name = TWEET,length = 280)
     private String tweet;

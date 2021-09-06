@@ -161,6 +161,32 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
         }
     }
 
+    @Override
+    public Integer editableComments(Tweet tweet, Comment comment) {
+        while(true){
+            try{
+                ApplicationContext.getDemonstrateMenus().toDoWithEditableComments();
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    System.out.print("New comment : ");
+                    String newComment = new Scanner(System.in).nextLine();
+                    comment.setComment(newComment);
+                    createOrUpdate(tweet);
+                    System.out.println("Your comment successfully deleted");
+                    return 1;
+                }else if(choice == 2){
+                    return 2;
+                }else if(choice == 3){
+                    return 3;
+                }else{
+                    System.out.println("Choose between menu options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
+            }
+        }
+    }
+
     private void comment(Tweet tweet,User user,int counter){
         while(true){
             try{
@@ -173,7 +199,8 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
                     deleteComment(tweet,user,counter);
                     break;
                 }else if(choice == 3){
-                    //TODO create a method to edit a comment
+                    editComment(tweet,user,counter);
+                    break;
                 }else if(choice == 4){
                     break;
                 }else{
@@ -182,6 +209,15 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
             }catch (InputMismatchException exception){
                 System.out.println("Invalid entry");
             }
+        }
+    }
+
+    private void editComment(Tweet tweet, User user, int counter) {
+        List<Tweet> tweets = repository.findTweetByUserComments(tweet,user.getUserName());
+        if(tweets.size() != 0){
+            ApplicationContext.getDemonstrateInformation().printNominatedForEdit(tweets,user,counter);
+        }else{
+            System.out.println("You don't any comment for this tweet ");
         }
     }
 
@@ -253,7 +289,7 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
     }
 
     private void like(Tweet tweet,User user){
-        Tweet userLikes = repository.findTweetByUserLikes(user.getUserName());
+        Tweet userLikes = repository.findTweetByUserLikes(tweet,user.getUserName());
         if(userLikes == null){
             for(int deleteDisLike = 0 ; deleteDisLike < tweet.getDisLikes().size(); deleteDisLike++){
                 if(tweet.getDisLikes().get(deleteDisLike).getUserName().equals(user.getUserName())){
@@ -272,7 +308,7 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
     }
 
     private void disLike(Tweet tweet, User user){
-        Tweet userDisLikes = repository.findTweetByUserDisLikes(user.getUserName());
+        Tweet userDisLikes = repository.findTweetByUserDisLikes(tweet,user.getUserName());
         if(userDisLikes == null){
             for(int deleteLike = 0 ; deleteLike < tweet.getLikes().size(); deleteLike++){
                 if(tweet.getLikes().get(deleteLike).getUserName().equals(user.getUserName())){

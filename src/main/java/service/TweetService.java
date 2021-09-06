@@ -20,4 +20,6 @@ public interface TweetService extends BaseService<Tweet,Long> {
     Integer toDoWithTweets(Tweet tweet, User user, int counter);
 
     Integer deletableComments(Tweet tweet, Comment comment);
+
+    Integer editableComments(Tweet tweet, Comment comment);
 }

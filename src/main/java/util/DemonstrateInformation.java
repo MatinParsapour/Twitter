@@ -327,4 +327,16 @@ public class DemonstrateInformation {
             }
         }
     }
+
+    public void printNominatedForEdit(List<Tweet> tweets, User user, int tweet){
+        for(int counter = 0 ; counter <tweets.get(tweet).getCommentList().size() ; counter++){
+            if(tweets.get(tweet).getCommentList().get(counter).getUser().equals(user.getUserName())){
+                System.out.println(tweets.get(tweet).getCommentList().get(counter).getComment());
+                int nextMove = ApplicationContext.getTweetService().editableComments(tweets.get(tweet),tweets.get(tweet).getCommentList().get(counter));
+                if(nextMove == 3){
+                    break;
+                }
+            }
+        }
+    }
 }
