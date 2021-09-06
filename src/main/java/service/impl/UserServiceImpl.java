@@ -13,7 +13,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
     public UserServiceImpl(UserRepository repository) {
         super(repository);
     }
@@ -26,7 +26,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         user.setFirstName(firstName());
         user.setUserName(userName());
         String email = email(user.getEmail());
-        if(email != null){
+        if (email != null) {
             user.setEmail(email);
             user.setPassword(password());
             user.setBirthday(birthday());
@@ -38,20 +38,20 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
 
     @Override
     public void howToLogIn() {
-        while(true){
-            try{
+        while (true) {
+            try {
                 ApplicationContext.getDemonstrateMenus().howToLogInMenu();
                 int choice = new Scanner(System.in).nextInt();
-                if(choice == 1){
+                if (choice == 1) {
                     logInUsingUserName();
                     break;
-                }else if(choice == 2){
+                } else if (choice == 2) {
                     logInUsingEmail();
                     break;
-                }else{
+                } else {
                     System.out.println("Choose between menu options");
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
@@ -61,15 +61,15 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     @Override
     public void logInUsingEmail() {
         System.out.println(" Login ");
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.print("Email : ");
                 String email = new Scanner(System.in).nextLine();
                 System.out.print("Password : ");
                 String password = new Scanner(System.in).nextLine();
-                User user = repository.findUserByEmailAndPassword(email,password);
+                User user = repository.findUserByEmailAndPassword(email, password);
                 if (evaluateUser(user)) break;
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
@@ -79,15 +79,15 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     @Override
     public void logInUsingUserName() {
         System.out.println(" Login ");
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.print("Username : ");
                 String userName = new Scanner(System.in).nextLine();
                 System.out.print("Password : ");
                 String password = new Scanner(System.in).next();
                 User user = repository.findUserByUserNameAndPassword(userName, password);
                 if (evaluateUser(user)) break;
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
@@ -96,47 +96,56 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
 
     @Override
     public void mainMenu(User user) {
-        while(true){
-            try{
+        while (true) {
+            try {
                 ApplicationContext.getDemonstrateMenus().mainMenu();
                 int choice = new Scanner(System.in).nextInt();
-                if(choice == 1){
+                if (choice == 1) {
                     ApplicationContext.getTweetService().userTweets(user);
-                }else if(choice == 2){
+                } else if (choice == 2) {
                     ApplicationContext.getTweetService().tweets(user);
-                }else if(choice == 3){
+                } else if (choice == 3) {
                     profile(user);
-                }else if(choice == 4){
+                } else if (choice == 4) {
+                    search();
+                } else if (choice == 5) {
                     break;
-                }else{
+                } else {
                     System.out.println("Choose between menu options");
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
     }
 
+    private void search() {
+        System.out.print("Username : ");
+        String username = new Scanner(System.in).nextLine();
+        User user = repository.findUserByUserName(username);
+        ApplicationContext.getDemonstrateInformation().printUserInSearch(user);
+    }
+
     @Override
     public void profile(User user) {
-        while(true){
-            try{
+        while (true) {
+            try {
                 ApplicationContext.getDemonstrateInformation().userInformation(user);
                 ApplicationContext.getDemonstrateMenus().profileMenu();
                 int choice = new Scanner(System.in).nextInt();
-                if(choice == 1){
+                if (choice == 1) {
                     changeProfile(user);
                     createOrUpdate(user);
-                }else if(choice == 2){
+                } else if (choice == 2) {
                     deleteField(user);
                     createOrUpdate(user);
-                }else if(choice == 3){
+                } else if (choice == 3) {
                     break;
-                }else {
+                } else {
                     System.out.println("Choose between menu options");
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
@@ -147,7 +156,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     public void changeProfile(User user) {
         System.out.print("Enter name of field : ");
         String field = new Scanner(System.in).next();
-        switch (field.toLowerCase()){
+        switch (field.toLowerCase()) {
             case "firstname":
                 user.setFirstName(firstName());
                 break;
@@ -181,10 +190,10 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     public void deleteField(User user) {
         System.out.print("Enter name of field : ");
         String field = new Scanner(System.in).next();
-        switch (field.toLowerCase()){
+        switch (field.toLowerCase()) {
             case "firstname":
-            case "username" :
-            case "email" :
+            case "username":
+            case "email":
             case "password":
             case "birthday":
                 System.out.println("You can't delete this field");
@@ -204,121 +213,121 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     }
 
     private void deleteBio(User user) {
-        try{
+        try {
             System.out.println("Are you sure");
             System.out.println("1.Yes   2.NO");
             int finalPermission = new Scanner(System.in).nextInt();
-            if(finalPermission == 1){
+            if (finalPermission == 1) {
                 user.setBio(null);
                 System.out.println("Phone number deleted");
             }
-        }catch (InputMismatchException exception){
+        } catch (InputMismatchException exception) {
             System.out.println("Invalid entry");
         }
     }
 
     private void deletePhoneNumber(User user) {
-        try{
+        try {
             System.out.println("Are you sure");
             System.out.println("1.Yes   2.NO");
             int finalPermission = new Scanner(System.in).nextInt();
-            if(finalPermission == 1){
+            if (finalPermission == 1) {
                 user.setPhoneNumber(null);
                 System.out.println("Phone number deleted");
             }
-        }catch (InputMismatchException exception){
+        } catch (InputMismatchException exception) {
             System.out.println("Invalid entry");
         }
     }
 
     private void deleteLastName(User user) {
-        try{
+        try {
             System.out.println("Are you sure");
             System.out.println("1.Yes   2.No");
             int finalPermission = new Scanner(System.in).nextInt();
-            if(finalPermission == 1){
+            if (finalPermission == 1) {
                 user.setLastName(null);
                 System.out.println("Lastname deleted");
             }
-        }catch (InputMismatchException exception){
+        } catch (InputMismatchException exception) {
             System.out.println("Invalid entry");
         }
     }
 
     private boolean evaluateUser(User user) {
-        if(user == null){
+        if (user == null) {
             System.out.println("Username or Password is incorrect\nor maybe you haven't sign up yet");
             System.out.println("1.Try again                   2.SignUp");
             int choice = new Scanner(System.in).nextInt();
-            if(choice == 2){
+            if (choice == 2) {
                 signUp();
                 return true;
             }
-        }else{
+        } else {
             mainMenu(user);
             return true;
         }
         return false;
     }
 
-    private String firstName(){
-        while(true){
-            try{
+    private String firstName() {
+        while (true) {
+            try {
                 System.out.print("Firstname : ");
                 String firstName = new Scanner(System.in).nextLine();
                 System.out.println("1.Acceptable        2.Unacceptable");
                 int choice = new Scanner(System.in).nextInt();
-                if(choice == 1){
+                if (choice == 1) {
                     return firstName;
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
     }
 
-    private String lastName(){
-        while(true){
-            try{
+    private String lastName() {
+        while (true) {
+            try {
                 System.out.print("Lastname : ");
                 String firstName = new Scanner(System.in).nextLine();
                 System.out.println("1.Acceptable        2.Unacceptable");
                 int choice = new Scanner(System.in).nextInt();
-                if(choice == 1){
+                if (choice == 1) {
                     return firstName;
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
     }
 
-    private String userName(){
-        while(true){
-            try{
+    private String userName() {
+        while (true) {
+            try {
                 System.out.print("Username : ");
                 String userName = new Scanner(System.in).nextLine();
                 User user = repository.findUserByUserName(userName);
-                if(user == null){
+                if (user == null) {
                     System.out.println("1.Acceptable         2.Unacceptable");
                     int choice = new Scanner(System.in).nextInt();
-                    if(choice == 1){
+                    if (choice == 1) {
                         return userName;
                     }
-                }else {
+                } else {
                     System.out.println("This username already exist");
                     System.out.println("Choose another username");
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
     }
 
-    private String password(){
+    private String password() {
         while (true) {
             try {
                 Pattern pattern = Pattern.compile("[0-9]{10}");
@@ -345,7 +354,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
         }
     }
 
-    private String email(String currentEmail){
+    private String email(String currentEmail) {
         Pattern validEmail = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[\\a-zA-Z]{2,6}");
         System.out.print("Email : ");
         String email = new Scanner(System.in).next();
@@ -356,12 +365,12 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
             email = new Scanner(System.in).next();
             machEmail = validEmail.matcher(email);
         }
-        return validationEmail(email,currentEmail);
+        return validationEmail(email, currentEmail);
     }
 
     private String validationEmail(String email, String currentEmail) {
         while (true) {
-            try{
+            try {
                 Random random = new Random();
                 int validationCode = random.nextInt(1000000);
                 System.out.println("Please wait, we are sending a validation code to " + email);
@@ -390,7 +399,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                         return currentEmail;
                     }
                 }
-            }catch (InputMismatchException | InterruptedException exception){
+            } catch (InputMismatchException | InterruptedException exception) {
                 System.out.println("Something went wrong");
                 System.out.println("Try again");
             }
@@ -408,12 +417,12 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
             phoneNumber = new Scanner(System.in).next();
             matchPhoneNumber = validPhoneNumber.matcher(phoneNumber);
         }
-        return validationPhoneNumber(phoneNumber,currentPhoneNumber);
+        return validationPhoneNumber(phoneNumber, currentPhoneNumber);
     }
 
     private String validationPhoneNumber(String phoneNumber, String number) {
         while (true) {
-            try{
+            try {
                 Random random = new Random();
                 int validationCode = random.nextInt(1000000);
                 System.out.println("Please wait, we are sending a validation code to " + phoneNumber);
@@ -435,35 +444,35 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                         return number;
                     }
                 }
-            }catch (InputMismatchException | InterruptedException exception){
+            } catch (InputMismatchException | InterruptedException exception) {
                 System.out.println("Something went wrong");
                 System.out.println("Try again");
             }
         }
     }
 
-    private String bio(){
-        while(true){
-            try{
+    private String bio() {
+        while (true) {
+            try {
                 System.out.print("Bio : ");
                 String bio = new Scanner(System.in).nextLine();
-                if(bio.length() <= 160){
+                if (bio.length() <= 160) {
                     System.out.println("1.Acceptable        2.Unacceptable");
                     int choice = new Scanner(System.in).nextInt();
-                    if(choice == 1){
+                    if (choice == 1) {
                         return bio;
                     }
-                }else{
+                } else {
                     System.out.println("You should enter bio fewer than 160 character");
                 }
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
             }
         }
     }
 
-    private LocalDate birthday(){
+    private LocalDate birthday() {
         System.out.println("Birthday");
         LocalDate date;
         while (true) {
@@ -488,8 +497,8 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     }
 
     private int day() {
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.print("Day : ");
                 int day = new Scanner(System.in).nextInt();
                 while (day < 1 || day > 31) {
@@ -498,7 +507,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                     day = new Scanner(System.in).nextInt();
                 }
                 return day;
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("You should enter number");
                 System.out.println("Try again");
             }
@@ -506,8 +515,8 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
     }
 
     private int month() {
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.print("Month : ");
                 int month = new Scanner(System.in).nextInt();
                 while (month < 1 || month > 12) {
@@ -516,7 +525,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                     month = new Scanner(System.in).nextInt();
                 }
                 return month;
-            }catch (InputMismatchException exception){
+            } catch (InputMismatchException exception) {
                 System.out.println("You should enter number");
                 System.out.println("Try again");
             }

@@ -22,7 +22,8 @@ public class DemonstrateMenus {
         System.out.println("|      1.Your tweets      |");
         System.out.println("|      2.all tweets       |");
         System.out.println("|      3.profile          |");
-        System.out.println("|      4.Exit             |");
+        System.out.println("|      4.Search           |");
+        System.out.println("|      5.Exit             |");
         System.out.println("+-------------------------+");
     }
 
@@ -53,7 +54,7 @@ public class DemonstrateMenus {
 
     public void allTweetsMenu(){
         System.out.println("+--------------------------------------------------------------------+");
-        System.out.println("| 1.comment 📝  2.like 👍  3.dislike 👎  4.next tweet  5.back to menu |");
+        System.out.println("| 1.comment 💬  2.like 👍  3.dislike 👎  4.next tweet  5.back to menu |");
         System.out.println("+--------------------------------------------------------------------+");
     }
 }

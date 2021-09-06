@@ -223,4 +223,82 @@ public class DemonstrateInformation {
         }
         System.out.println("+");
     }
+
+    public void printUserInSearch(User user){
+        int firstNameSize = user.getFirstName().length();
+        int lastNameSize;
+        int phoneNumberSize;
+        int bioSize;
+        if(user.getLastName() != null){
+            lastNameSize = user.getLastName().length();
+        }else{
+            lastNameSize = 10;
+        }if(user.getPhoneNumber() != null){
+            phoneNumberSize = user.getPhoneNumber().length();
+        }else{
+            phoneNumberSize = 12;
+        }if(user.getBio() != null){
+            bioSize = user.getBio().length();
+        }else{
+            bioSize = 5;
+        }
+        int userNameSize = user.getUserName().length();
+        int emailSize = user.getEmail().length();
+
+        int cover = firstNameSize + lastNameSize + userNameSize + emailSize + phoneNumberSize +
+                bioSize + 39;
+
+        userHeaderInSearch(firstNameSize,lastNameSize,userNameSize,emailSize,phoneNumberSize,bioSize,cover);
+
+        userInformationInSearch(firstNameSize,lastNameSize,userNameSize,emailSize,phoneNumberSize,bioSize,cover,user);
+
+    }
+
+    private void userHeaderInSearch(int firstNameSize, int lastNameSize, int userNameSize, int emailSize, int phoneNumberSize, int bioSize, int cover){
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+
+        System.out.format("| %" +(-(firstNameSize + 9)) + "s","firstname");
+        System.out.format("|%" +(-(lastNameSize + 8)) + "s","lastname");
+        System.out.format("|%" +(-(userNameSize + 8)) + "s","username");
+        System.out.format("|%" +(-(emailSize + 3)) + "s","email");
+        System.out.format("|%" +(-(phoneNumberSize + 3)) + "s","phonenumber");
+        System.out.format("|%" +(-(bioSize + 3)) + "s|\n","bio");
+
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
+    private void userInformationInSearch(int firstNameSize, int lastNameSize, int userNameSize, int emailSize, int phoneNumberSize, int bioSize, int cover, User user){
+        System.out.format("| %" +(-(firstNameSize + 9)) + "s", user.getFirstName());
+        if(user.getLastName() != null){
+            System.out.format("|%" +(-(lastNameSize + 8)) + "s", user.getLastName());
+        }else{
+            System.out.format("|%" +(-(lastNameSize + 8)) + "s","");
+        }
+        System.out.format("|%" +(-(userNameSize + 8)) + "s", user.getUserName());
+        System.out.format("|%" +(-(emailSize + 3)) + "s", user.getEmail());
+        if(user.getPhoneNumber() != null){
+            System.out.format("|%" +(-(phoneNumberSize + 3)) + "s", user.getPhoneNumber());
+        }else{
+            System.out.format("|%" +(-(phoneNumberSize + 3)) + "s","");
+        }
+        if(user.getBio() != null){
+            System.out.format("|%" +(-(bioSize + 3)) + "s|\n", user.getBio());
+        }else{
+            System.out.format("|%" +(-(bioSize + 3)) + "s|\n","");
+        }
+
+
+        System.out.print("+");
+        for(int header = 0; header <= cover; header++){
+            System.out.print("-");
+        }
+        System.out.println("+");
+    }
 }
