@@ -10,4 +10,6 @@ public interface UserRepository extends BaseRepository<User,Long> {
     User findUserByUserNameAndPassword(String userName, String password);
 
     User findUserByEmailAndPassword(String email, String password);
+
+    User findUserByUserNameForSearch(String userName);
 }

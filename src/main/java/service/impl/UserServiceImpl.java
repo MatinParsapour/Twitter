@@ -123,8 +123,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
     private void search() {
         System.out.print("Username : ");
         String username = new Scanner(System.in).nextLine();
-        User user = repository.findUserByUserName(username);
-        ApplicationContext.getDemonstrateInformation().printUserInSearch(user);
+        User user = repository.findUserByUserNameForSearch(username);
+        if(user != null){
+            ApplicationContext.getDemonstrateInformation().printUserInSearch(user);
+        }else{
+            System.out.println("No user found");
+        }
     }
 
     @Override

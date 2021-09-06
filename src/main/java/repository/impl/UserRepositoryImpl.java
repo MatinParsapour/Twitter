@@ -70,4 +70,24 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User,Long> implements
             return null;
         }
     }
+
+    @Override
+    public User findUserByUserNameForSearch(String userName) {
+        try{
+            CriteriaQuery<User> criteriaQuery = CriteriaCustom.getCriteriaBuilderCutom().createQuery(User.class);
+            Root<User> userRoot = criteriaQuery.from(User.class);
+            criteriaQuery.select(userRoot).where(CriteriaCustom.getCriteriaBuilderCutom().equal(userRoot.get("userName"), userName));
+            criteriaQuery.multiselect(
+                    userRoot.get("firstName"),
+                    userRoot.get("lastName"),
+                    userRoot.get("userName"),
+                    userRoot.get("email"),
+                    userRoot.get("phoneNumber"),
+                    userRoot.get("bio"));
+            User user = entityManager.createQuery(criteriaQuery).getSingleResult();
+            return user;
+        }catch (NoResultException exception){
+            return null;
+        }
+    }
 }
