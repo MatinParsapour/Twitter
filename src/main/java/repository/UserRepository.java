@@ -1,6 +1,7 @@
 package repository;
 
 import base.repository.BaseRepository;
+import domain.Tweet;
 import domain.User;
 
 public interface UserRepository extends BaseRepository<User,Long> {
@@ -12,4 +13,6 @@ public interface UserRepository extends BaseRepository<User,Long> {
     User findUserByEmailAndPassword(String email, String password);
 
     User findUserByUserNameForSearch(String userName);
+
+    User findUserByTweet(Tweet tweet);
 }

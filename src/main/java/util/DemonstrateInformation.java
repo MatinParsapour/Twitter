@@ -193,6 +193,7 @@ public class DemonstrateInformation {
                                 User user){
         for(int tweet = 0; tweet < tweets.size() ; tweet++){
             int cover = tweetSize + likesSize + disLikesSize + 9;
+            ApplicationContext.getUserService().showUser(tweets.get(tweet));
             printTweetHeader(tweetSize, likesSize, disLikesSize, cover);
             printAllTweetsInformation(tweets, tweetSize, likesSize, disLikesSize, tweet, cover);
             if(tweets.get(tweet).getCommentList().size() != 0){

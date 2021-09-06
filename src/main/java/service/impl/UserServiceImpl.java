@@ -1,6 +1,7 @@
 package service.impl;
 
 import base.service.BaseServiceImpl;
+import domain.Tweet;
 import domain.User;
 import repository.UserRepository;
 import service.UserService;
@@ -214,6 +215,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
             default:
                 System.out.println("Invalid entry");
         }
+    }
+
+    @Override
+    public void showUser(Tweet tweet) {
+        User user = repository.findUserByTweet(tweet);
+        System.out.println(user.getUserName());
     }
 
     private void deleteBio(User user) {

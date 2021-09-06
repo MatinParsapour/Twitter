@@ -1,6 +1,7 @@
 package repository.impl;
 
 import base.repository.BaseRepositoryImpl;
+import domain.Tweet;
 import domain.User;
 import repository.UserRepository;
 import util.CriteriaCustom;
@@ -85,6 +86,21 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User,Long> implements
                     userRoot.get("phoneNumber"),
                     userRoot.get("bio"));
             User user = entityManager.createQuery(criteriaQuery).getSingleResult();
+            return user;
+        }catch (NoResultException exception){
+            return null;
+        }
+    }
+
+    @Override
+    public User findUserByTweet(Tweet tweet) {
+        try{
+            EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
+            User user = entityManager.createQuery("SELECT u " +
+                    "FROM User u " +
+                    "JOIN u.tweets t"+
+                    " WHERE t.id = :id ",User.class)
+                    .setParameter("id",tweet.getId()).getSingleResult();
             return user;
         }catch (NoResultException exception){
             return null;
