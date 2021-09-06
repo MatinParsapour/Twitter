@@ -103,7 +103,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long, UserRepository> 
                 if(choice == 1){
                     ApplicationContext.getTweetService().userTweets(user);
                 }else if(choice == 2){
-                    //TODO create a method for users to see tweets of everybody
+                    ApplicationContext.getTweetService().tweets(user);
                 }else if(choice == 3){
                     profile(user);
                 }else if(choice == 4){

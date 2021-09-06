@@ -50,4 +50,10 @@ public class DemonstrateMenus {
         System.out.println("|       4.back to menu        |");
         System.out.println("+-----------------------------+");
     }
+
+    public void allTweetsMenu(){
+        System.out.println("+--------------------------------------------------------------------+");
+        System.out.println("| 1.comment 📝  2.like 👍  3.dislike 👎  4.next tweet  5.back to menu |");
+        System.out.println("+--------------------------------------------------------------------+");
+    }
 }

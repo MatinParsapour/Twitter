@@ -5,6 +5,7 @@ import base.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,7 +46,7 @@ public class User extends BaseEntity<Long> {
     private String bio;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Tweet> tweets;
+    private List<Tweet> tweets = new ArrayList<>();
 
     public User() {
     }
