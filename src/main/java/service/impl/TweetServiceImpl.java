@@ -291,9 +291,9 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
     private void like(Tweet tweet,User user){
         Tweet userLikes = repository.findTweetByUserLikes(tweet,user.getUserName());
         if(userLikes == null){
-            for(int deleteDisLike = 0 ; deleteDisLike < tweet.getDisLikes().size(); deleteDisLike++){
-                if(tweet.getDisLikes().get(deleteDisLike).getUserName().equals(user.getUserName())){
-                    tweet.getDisLikes().remove(deleteDisLike);
+            for(int delete = 0 ; delete < tweet.getDisLikes().size(); delete++){
+                if(tweet.getDisLikes().get(delete).getUserName().equals(user.getUserName())){
+                    tweet.getDisLikes().remove(delete);
                     createOrUpdate(tweet);
                     break;
                 }
@@ -303,7 +303,13 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
             tweet.getLikes().add(like);
             createOrUpdate(tweet);
         }else{
-            System.out.println("You can't like a tweet more than once");
+            for(int delete = 0 ; delete < tweet.getLikes().size(); delete++){
+                if(tweet.getLikes().get(delete).getUserName().equals(user.getUserName())){
+                    tweet.getLikes().remove(delete);
+                    createOrUpdate(tweet);
+                    break;
+                }
+            }
         }
     }
 
@@ -322,7 +328,13 @@ public class TweetServiceImpl extends BaseServiceImpl<Tweet,Long, TweetRepositor
             tweet.getDisLikes().add(disLike);
             createOrUpdate(tweet);
         }else{
-            System.out.println("You can't dislike a tweet more than once");
+            for(int deleteLike = 0 ; deleteLike < tweet.getDisLikes().size(); deleteLike++){
+                if(tweet.getDisLikes().get(deleteLike).getUserName().equals(user.getUserName())){
+                    tweet.getDisLikes().remove(deleteLike);
+                    createOrUpdate(tweet);
+                    break;
+                }
+            }
         }
     }
 }
