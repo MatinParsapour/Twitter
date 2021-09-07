@@ -197,13 +197,13 @@ public class DemonstrateInformation {
             printTweetHeader(tweetSize, likesSize, disLikesSize, cover);
             printAllTweetsInformation(tweets, tweetSize, likesSize, disLikesSize, tweet, cover);
             if(tweets.get(tweet).getCommentList().size() != 0){
-                for(int userNameSizes = 0; userNameSizes < tweets.get(tweet).getCommentList().get(tweet).getUser().length(); userNameSizes++){
-                    if(tweets.get(tweet).getCommentList().get(tweet).getUser().length() > tweetSize){
-                        userNameSize = tweets.get(tweet).getCommentList().get(tweet).getUser().length();
+                for(int userNameSizes = 0; userNameSizes < tweets.get(tweet).getCommentList().size(); userNameSizes++){
+                    if(tweets.get(tweet).getCommentList().get(userNameSizes).getUser().length() > tweetSize){
+                        userNameSize = tweets.get(tweet).getCommentList().get(userNameSizes).getUser().length();
                     }
-                }for(int commentSizes = 0; commentSizes < tweets.get(tweet).getCommentList().get(tweet).getComment().length(); commentSizes++){
-                    if(tweets.get(tweet).getCommentList().get(tweet).getComment().length() > tweetSize){
-                        commentSize = tweets.get(tweet).getCommentList().get(tweet).getComment().length();
+                }for(int commentSizes = 0; commentSizes < tweets.get(tweet).getCommentList().size(); commentSizes++){
+                    if(tweets.get(tweet).getCommentList().get(commentSizes).getComment().length() > tweetSize){
+                        commentSize = tweets.get(tweet).getCommentList().get(commentSizes).getComment().length();
                     }
                 }
                 for(int comment = 0; comment < tweets.get(tweet).getCommentList().size() ; comment++){
@@ -224,7 +224,7 @@ public class DemonstrateInformation {
                                            int likesSize , int disLikesSize,
                                            int tweet, int cover){
         System.out.format("| %" + (-(tweetSize + 7)) + "s", tweets.get(tweet).getTweet());
-        System.out.format("|%" + (-likesSize) + "s", tweets.get(tweet).getLikes().size());
+        System.out.format("|%" + (-(likesSize)) + "s", tweets.get(tweet).getLikes().size());
         System.out.format("|%" + (-disLikesSize) + "s|\n", tweets.get(tweet).getDisLikes().size());
         System.out.print("+");
         for(int header = 0; header <= cover; header++){

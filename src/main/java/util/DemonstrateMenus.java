@@ -28,7 +28,8 @@ public class DemonstrateMenus {
         System.out.println("|      2.all tweets       |");
         System.out.println("|      3.profile          |");
         System.out.println("|      4.Search           |");
-        System.out.println("|      5.Exit             |");
+        System.out.println("|      5.log out          |");
+        System.out.println("|      6.Exit             |");
         System.out.println("+-------------------------+");
         System.out.print(Color.ANSI_RESET);
     }

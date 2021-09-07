@@ -110,7 +110,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
                     profile(user);
                 } else if (choice == 4) {
                     search();
-                } else if (choice == 5) {
+
+                } else if (choice == 5){
+                    int nextMove = logOut(user);
+                    if(nextMove == 1){
+                        break;
+                    }
+                }
+                else if (choice == 6) {
                     break;
                 } else {
                     System.out.println("Choose between menu options");
@@ -118,6 +125,26 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository>
             } catch (InputMismatchException exception) {
                 System.out.println("Invalid entry");
                 System.out.println("Try again");
+            }
+        }
+    }
+
+    private int logOut(User user) {
+        while(true){
+            try{
+                System.out.println("Are you sure");
+                System.out.println("1.Yes   2.NO");
+                int choice = new Scanner(System.in).nextInt();
+                if(choice == 1){
+                    delete(user);
+                    return 1;
+                }else if(choice == 2){
+                    return 2;
+                }else{
+                    System.out.println("Choose between options");
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("Invalid entry");
             }
         }
     }

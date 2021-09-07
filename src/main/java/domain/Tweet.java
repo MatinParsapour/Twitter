@@ -16,7 +16,7 @@ public class Tweet extends BaseEntity<Long> {
     private String tweet;
 
     @ElementCollection
-    private List<Like> likes;
+    private List<Like> likes = new ArrayList<>();
 
     @ElementCollection
     private List<DisLike> disLikes = new ArrayList<>();
