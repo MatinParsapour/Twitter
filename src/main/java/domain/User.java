@@ -24,7 +24,9 @@ public class User extends BaseEntity<Long> {
     @Column(name = FIRST_NAME)
     private String firstName;
 
-    public User(String firstName, String lastName, String userName, String email, String phoneNumber, String bio) {
+    public User(String firstName, String lastName,
+                String userName, String email,
+                String phoneNumber, String bio) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;

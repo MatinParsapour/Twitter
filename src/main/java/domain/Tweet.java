@@ -24,6 +24,10 @@ public class Tweet extends BaseEntity<Long> {
     @ElementCollection
     private List<Comment> commentList = new ArrayList<>();
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
+
     public Tweet() {
     }
 
@@ -61,5 +65,13 @@ public class Tweet extends BaseEntity<Long> {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
